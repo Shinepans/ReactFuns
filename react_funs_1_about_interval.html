@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="../build/react.js"></script>
+        <script src="../build/react-dom.js"></script>
+        <script src="../build/browser.min.js"></script>
+    </head>
+    <body>
+        <div id="example"></div>
+        <script type="text/babel">
+            var Timer = React.createClass({
+              getInitialState: function() {
+                return {
+                  secondsElapsed: 0,
+                  R: 255,
+                  G: 0,
+                  B: 0,
+                  A: 1,
+                  X: 0,
+                  Y: 0,
+                  RGBA: 'rgba(0,0,0,0)',
+                  width: "1%",
+                  width_num: 1.1
+                };
+              },
+              tick: function() {
+                // var rgba_str = 'rgba(' + Math.floor(Math.random() * 255) + ',' + 
+                //     Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + 
+                //     ','+ (Math.floor(Math.random() * 10))/10 + '1)';
+                var R = this.state.R;
+                var G = this.state.G;
+                var B = this.state.B;
+                var A = this.state.A;
+                if((255-R)){
+                    R = R - 1;
+                }else{
+                    R = R + 1;
+                }
+                if(G < 250 && G > 5){
+                    G = G - 1;
+                }else{
+                    G = G + 1;
+                }
+                if(B > 250 && B > 5){
+                    B = B - 1;
+                }else{
+                    B = B + 1;
+                }
+                var X = Math.floor(Math.random() * 1366);
+                var Y = Math.floor(Math.random() * 700);
+                var rgba_str = 'rgba(' + R + ',' + G + ',' + B + ','+ A + ')';
+                var width_temp_num = this.state.width_num;
+                if(this.state.width_num < 100) {
+                    width_temp_num = this.state.width_num + 0.1;
+                }else{
+                    width_temp_num = Math.sqrt(this.state.width_num);
+                }
+                var width_str = width_temp_num + "%";
+                this.setState({
+                    secondsElapsed: this.state.secondsElapsed + 1,
+                    RGBA: rgba_str,
+                    width: width_str,
+                    width_num: width_temp_num,
+                    R: R,
+                    G: G,
+                    B: B,
+                    A: A
+                });
+
+              },
+              componentDidMount: function() {
+                this.interval = setInterval(this.tick, 10);
+              },
+              componentWillUnmount: function() {
+                clearInterval(this.interval);
+              },
+              render: function() {
+                return (
+                  <div style={{fontSize:30,backgroundColor:this.state.RGBA,width:this.state.width,height:1000}}>Seconds Elapsed: {this.state.secondsElapsed}
+                      <br />
+                      Color: {this.state.RGBA}
+                      <br />
+                      Width: {this.state.width}
+                  </div>
+                );
+              }
+            });
+
+            ReactDOM.render(
+                <Timer />, 
+                document.getElementById('example')
+            );
+
+        </script>
+    </body>
+</html>
